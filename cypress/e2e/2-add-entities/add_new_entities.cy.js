@@ -34,7 +34,7 @@ describe('Gateway Service e2e test action 2', () => {
         cy.visit(kong_ui_base_url);
     });
 
-    it('Add additional entities associated with a service', () => {
+    it('Add route associated with a service', () => {
         const { v4: uuidv4 } = require('uuid');
         var service_name = `test-service-${uuidv4()}`;
         var route_name = `test-route-${uuidv4()}`;

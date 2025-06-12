@@ -1,4 +1,5 @@
 import Toaster from '../elements/toaster';
+import { common_func } from '../selectors/selector';
 
 class CommonFunc {
     constructor() {
@@ -9,7 +10,7 @@ class CommonFunc {
     //if count is greater than 0, click add entity button
     createNewEntity(type, count) {
         if (count == 0) {
-            cy.get('[data-testid="empty-state-action"]').click();
+            cy.get(common_func.empty_state_action).click();
         } else {
             cy.get(`[data-testid="toolbar-add-${type}"]`).click();
         }
@@ -18,10 +19,10 @@ class CommonFunc {
 
     //delete entity based on the entity name
     deleteEntity(entity_name) {
-        cy.get(`[data-testid="${entity_name}"]`).find('[data-testid="row-actions-dropdown-trigger"]').click();
-        cy.get(`[data-testid="${entity_name}"]`).find('[data-testid="action-entity-delete"]').click();
-        cy.get('[data-testid="confirmation-input"]').type(entity_name);
-        cy.get('[data-testid="modal-action-button"]').click();
+        cy.get(`[data-testid="${entity_name}"]`).find(common_func.entity_actions_dropdown_trigger).click();
+        cy.get(`[data-testid="${entity_name}"]`).find(common_func.entity_delete_action).click();
+        cy.get(common_func.entity_delete_confirmation_input).type(entity_name);
+        cy.get(common_func.entity_delete_confirmation_button).click();
         this.toaster.closeToaster();
     }
 }
