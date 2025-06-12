@@ -1,47 +1,55 @@
-describe('create new services e2e test', () => {
-  it.only('Create a new Service from scratch', () => {
-    // load env
-    const kong_ui_base_url = Cypress.env('kong_ui_base_url')
-    const kong_test_services_url = Cypress.env('kong_test_services_url')
-    var service_name
+import WorkSpaceSidebar from '../../support/elements/workspace_sidebar';
+import Workspace from '../../support/pages/workspace';
+import Services from '../../support/pages/services';
+import Overview from '../../support/pages/overview';
+import CommonFunc from '../../support/functions/common_func';
+
+describe('Gateway Service e2e test action 1', () => {
+  // load env
+  const kong_ui_base_url = Cypress.env('kong_ui_base_url');
+  const kong_test_services_url = Cypress.env('kong_test_services_url');
+
+  //init common elements
+  const workspace = new Workspace();
+  const workspace_sidebar = new WorkSpaceSidebar();
+  const services = new Services();
+  const overview = new Overview();
+  const common_func = new CommonFunc();
+
+  before(() => {
+    cy.log('Starting Test Suite...');
     //set browser
     cy.viewport(1280, 720);
+  });
+
+  after(() => {
+    cy.log('Test Suite Completed');
+  });
+
+  beforeEach(() => {
+    cy.log('Starting test...');
     //go to base url
-    cy.visit(kong_ui_base_url)
-    //get current services number
-    cy.get('[data-testid="Services"]').find('[class="metric-value-text"').invoke('text').then((text) => {
-      let services_count = Number(text);
-      cy.wrap(services_count).as('services_count');
-    });
-    //create service
+    cy.visit(kong_ui_base_url);
+  });
+
+  it('Create a new Service from scratch or on top of existing one', () => {
+    const { v4: uuidv4 } = require('uuid');
+    var service_name = `test-service-${uuidv4()}`;
+    //count existing services number
+    cy.log('Count existing services number');
+    overview.getCurrentEntityCount('Services', 'services_count');
+    //create service based on the number of existing services
     cy.get('@services_count').then((services_count) => {
-      //if no service, let's create a new one
-      if (services_count === 0) {
-        service_name = 'test-service'
-        cy.get('[data-testid="workspace-link-default"').click()
-        cy.get('[data-testid="sidebar-item-gateway-services"]').click()
-        cy.get('[data-testid="empty-state-action"]').click()
-        cy.get('[data-testid="gateway-service-name-input"]').type(service_name)
-        cy.get('[data-testid="gateway-service-url-input"]').type(kong_test_services_url)
-        cy.get('[data-testid="service-create-form-submit"]').click()
-      }
-      //if already services there, let's add a new one
-      if (services_count > 0) {
-        service_name = 'test-service-new'
-        cy.get('[data-testid="workspace-link-default"').click()
-        cy.get('[data-testid="sidebar-item-gateway-services"]').click()
-        cy.get('[data-testid="toolbar-add-gateway-service"]').click()
-        cy.get('[data-testid="gateway-service-name-input"]').type(service_name)
-        cy.get('[data-testid="gateway-service-url-input"]').type(kong_test_services_url)
-        cy.get('[data-testid="service-create-form-submit"]').click()
-      }
+      //create service
+      cy.log('Create service');
+      workspace.navigateTo('default');
+      workspace_sidebar.navigateTo('services');
+      services.createNewService(service_name, kong_test_services_url, services_count);
 
       //delete what I created for test to clean up
-      cy.get('[data-testid="sidebar-item-gateway-services"]').click()
-      cy.get(`[data-testid="${service_name}"]`).find('[data-testid="row-actions-dropdown-trigger"]').click()
-      cy.get(`[data-testid="${service_name}"]`).find('[data-testid="action-entity-delete"]').click()
-      cy.get('[data-testid="confirmation-input"]').type(service_name)
-      cy.get('[data-testid="modal-action-button"]').click()
-    })
-  })
+      cy.log('Delete service');
+      workspace_sidebar.navigateTo('services');
+      common_func.deleteEntity(service_name);
+    });
+  });
 })
