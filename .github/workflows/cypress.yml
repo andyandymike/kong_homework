@@ -21,14 +21,12 @@ jobs:
       - name: Run Docker Compose
         run: |
           docker-compose up -d
-          sleep 10  # Optional: wait for services to start
+          sleep 10
           docker-compose ps
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           build: npm run test
-          parallel: true
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -39,6 +39,7 @@ dist/
 # Cypress stuff
 cypress/screenshots/
 cypress/videos/
+cypress/reports/
 
 # dotenv environment variables files
 .env
