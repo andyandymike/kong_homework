@@ -1,5 +1,5 @@
-import { workspace_sidebar } from '../selectors/selector';
-import { workspaceSideBarEnum } from '../selectors/projectEnum';
+import { workspace_sidebar } from '../config/selector';
+import { workspaceSideBarEnum } from '../config/projectEnum';
 
 class WorkSpaceSidebar {
     navigateTo(sidebar_item) {

@@ -5,7 +5,7 @@ import ServicesDetail from '../../support/pages/service_detail';
 import Overview from '../../support/pages/overview';
 import Routes from '../../support/pages/routes';
 import RoutesDetail from '../../support/pages/route_detail';
-import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support/selectors/projectEnum';
+import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support/config/projectEnum';
 
 describe('Gateway Entities e2e tests - Routes and Services', () => {
     const kong_test_services_url = Cypress.env('kong_test_services_url');

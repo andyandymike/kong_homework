@@ -3,7 +3,7 @@ import Workspace from '../../support/pages/workspace';
 import Services from '../../support/pages/services';
 import Overview from '../../support/pages/overview';
 import ServicesDetail from '../../support/pages/service_detail';
-import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support/selectors/projectEnum';
+import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support/config/projectEnum';
 
 describe('Gateway Service e2e tests', () => {
   const kong_test_services_url = Cypress.env('kong_test_services_url');
