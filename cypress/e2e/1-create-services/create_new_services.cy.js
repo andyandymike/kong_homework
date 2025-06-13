@@ -9,6 +9,9 @@ describe('Gateway Service e2e tests', () => {
 
   let workspace, workspace_sidebar, services, overview, services_detail;
 
+  // Context for the tests to share
+  let context = {};
+
   before(() => {
     cy.log('Starting Test Suite...');
   });
@@ -27,6 +30,19 @@ describe('Gateway Service e2e tests', () => {
     cy.visit('/workspaces');
   });
 
+  afterEach(() => {
+    cy.log('Cleaning up...');
+    cy.visit('/workspaces');
+    workspace.navigateTo('default');
+
+    // Clean up the service if it exists
+    if (context.service_name) {
+      cy.log(`Cleaning up: deleting service ${context.service_name}`);
+      workspace_sidebar.navigateTo('services');
+      services.deleteEntity(context.service_name);
+    }
+  });
+
   it('should create and delete a service successfully', () => {
     const service_name = `test-service-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
@@ -40,15 +56,12 @@ describe('Gateway Service e2e tests', () => {
       workspace.navigateTo('default');
       workspace_sidebar.navigateTo('services');
       services.createNewService(service_name, kong_test_services_url, services_count);
+      // Set context for cleanup after creation
+      context.service_name = service_name;
 
       // Validate service creation
       cy.log('Verifying service is enabled');
       services_detail.validateServiceIsEnabled();
-
-      // Clean up - delete the created service
-      cy.log(`Cleaning up: deleting service ${service_name}`);
-      workspace_sidebar.navigateTo('services');
-      services.deleteEntity(service_name);
     });
   });
 
@@ -71,10 +84,8 @@ describe('Gateway Service e2e tests', () => {
       // Get service ID
       services_detail.getEntityId('service_id');
       cy.get('@service_id').then((service_id) => {
-        // Clean up - delete the created service
-        cy.log(`Cleaning up: deleting service ${service_id}`);
-        workspace_sidebar.navigateTo('services');
-        services.deleteEntity(service_id);
+        // Set context for cleanup after creation
+        context.service_name = service_id;
       });
     });
   });
