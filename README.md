@@ -1,4 +1,4 @@
-# Cypress E2E Test Project
+# Kong E2E Test Project with Cypress
 
 ## Local Run Setup
 
