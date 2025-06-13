@@ -6,8 +6,9 @@ import Overview from '../../support/pages/overview';
 import Routes from '../../support/pages/routes';
 import RoutesDetail from '../../support/pages/route_detail';
 import { overviewEnum, workspaceEnum, workspaceSideBarEnum, routesEnum } from '../../support/config/projectEnum';
+import 'cypress-fail-fast';
 
-describe('Gateway Entities e2e tests - Routes and Services', () => {
+describe('Gateway Entities e2e tests - Create Service, Route', () => {
     const kong_test_services_url = Cypress.env('kong_test_services_url');
 
     let workspace, workspace_sidebar, services, routes, overview, service_detail, route_detail;
@@ -33,8 +34,10 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
         cy.visit('/workspaces');
     });
 
-    afterEach(() => {
+    after(() => {
         cy.log('Cleaning up...');
+        // Set reasonable viewport
+        cy.viewport(1536, 960);
         cy.visit('/workspaces');
         workspace.navigateTo('default');
 
@@ -53,84 +56,74 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
         }
     });
 
-    it('should create a service and associated route successfully', () => {
+    afterEach(function () {
+        if (this.currentTest.state === 'failed') {
+            cy.log('Cleaning up on exception...');
+            // Set reasonable viewport
+            cy.viewport(1536, 960);
+            cy.visit('/workspaces');
+            workspace.navigateTo('default');
+
+            // Clean up the route if it exists
+            if (context.route_name) {
+                cy.log(`Cleaning up: deleting route ${context.route_name}`);
+                workspace_sidebar.navigateTo('routes');
+                routes.deleteEntity(context.route_name);
+            }
+
+            // Clean up the service if it exists
+            if (context.service_name) {
+                cy.log(`Cleaning up: deleting service ${context.service_name}`);
+                workspace_sidebar.navigateTo('services');
+                services.deleteEntity(context.service_name);
+            }
+        }
+    });
+
+    it('should create a service successfully', () => {
         const service_name = `test-service-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+
+        // Get current entity counts
+        cy.log('Getting current services count');
+        overview.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, 'services_count');
+
+        // Create service
+        cy.get('@services_count').then((services_count) => {
+            cy.log(`Creating service: ${service_name}`);
+            workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
+            workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
+            services.createNewService(service_name, kong_test_services_url, services_count);
+            // Set context for cleanup after creation
+            context.service_name = service_name;
+
+            // Verify service is enabled
+            cy.log('Verifying service is enabled');
+            service_detail.validateServiceIsEnabled();
+        });
+    });
+
+    it('should create a route and associated with previous service successfully', () => {
+        const service_name = context.service_name;
         const route_name = `test-route-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
         const protocols = routesEnum.protocols.HTTP_HTTPS;
         const path = '/mock';
 
         // Get current entity counts
-        cy.log('Getting current services and routes count');
-        overview.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, 'services_count');
+        cy.log('Getting current routes count');
         overview.getCurrentEntityCount(overviewEnum.summary.types.ROUTES, 'routes_count');
 
-        // Create service first
-        cy.get('@services_count').then((services_count) => {
-            cy.log(`Creating service: ${service_name}`);
+        // Create route associated with the service
+        cy.get('@routes_count').then((routes_count) => {
+            cy.log(`Creating route: ${route_name} for service: ${service_name}`);
             workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
-            workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
-            services.createNewService(service_name, kong_test_services_url, services_count);
+            workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
+            routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
             // Set context for cleanup after creation
-            context.service_name = service_name;
-            // Verify service is enabled
-            cy.log('Verifying service is enabled');
-            service_detail.validateServiceIsEnabled();
+            context.route_name = route_name;
 
-            // Create route associated with the service
-            cy.get('@routes_count').then((routes_count) => {
-                cy.log(`Creating route: ${route_name} for service: ${service_name}`);
-                workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
-                routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
-                // Set context for cleanup after creation
-                context.route_name = route_name;
-
-                // Verify route is created
-                cy.log('Verifying route is created');
-                route_detail.validateEntityIsCreated();
-            });
-        });
-    });
-
-    it('should create a service and associated route with empty name successfully', () => {
-        const service_name = `test-service-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-        const route_name = '';
-        const protocols = routesEnum.protocols.HTTP_HTTPS;
-        const path = '/mock';
-
-        // Get current entity counts
-        cy.log('Getting current services and routes count');
-        overview.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, 'services_count');
-        overview.getCurrentEntityCount(overviewEnum.summary.types.ROUTES, 'routes_count');
-
-        // Create service first
-        cy.get('@services_count').then((services_count) => {
-            cy.log(`Creating service: ${service_name}`);
-            workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
-            workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
-            services.createNewService(service_name, kong_test_services_url, services_count);
-            // Set context for cleanup after creation
-            context.service_name = service_name;
-            // Verify service is enabled
-            cy.log('Verifying service is enabled');
-            service_detail.validateServiceIsEnabled();
-
-            // Create route associated with the service
-            cy.get('@routes_count').then((routes_count) => {
-                cy.log(`Creating route: ${route_name} for service: ${service_name}`);
-                workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
-                routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
-
-                // Verify route is created
-                cy.log('Verifying route is created');
-                route_detail.validateEntityIsCreated();
-
-                // Get route ID
-                route_detail.getEntityId('route_id');
-                cy.get('@route_id').then((route_id) => {
-                    // Set context for cleanup after creation
-                    context.route_name = route_id;
-                });
-            });
+            // Verify route is created
+            cy.log('Verifying route is created');
+            route_detail.validateEntityIsCreated();
         });
     });
 });

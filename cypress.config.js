@@ -1,4 +1,6 @@
 const { defineConfig } = require("cypress");
+const cypressFailFast = require("cypress-fail-fast/plugin.js");
+
 
 module.exports = defineConfig({
   e2e: {
@@ -13,7 +15,9 @@ module.exports = defineConfig({
     },
     specPattern: "cypress/e2e/**/*.cy.{js,ts}",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      cypressFailFast(on, config, {
+        strategy: 'spec',
+      });
     },
   },
 });

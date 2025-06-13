@@ -1,24 +1,23 @@
 # Kong E2E Test Project with Cypress
 
 ## Local Run Setup
-- Make sure docker environment is ready and up
-- Open terminal to project root
+- Make sure docker environment is ready and up.
+- Open terminal to project root.
 - Run `git clone https://github.com/andyandymike/kong_homework.git`
 - Run `cd kong_homework`
 - Run `npm install`
 - Run `docker-compose up -d`
-- Check `http://localhost:8002/` is available
-- Check docker contains and get Container ID for cp
+- Check `http://localhost:8002/` is available.
+- Check docker contains and get Container ID for cp.
 - Run `docker exec -i [Container ID] /bin/sh -c "export KONG_ADMIN_GUI_PATH='/'; export KONG_ADMIN_GUI_URL='http://localhost:8002/manager'; kong reload; exit"`
 - Run `npm test` 
-- Check command line output or `cypress/reports/merged_report.html` for result
-- RUN `docker-compose down` to shut down docker services
+- Check command line output or `cypress/reports/merged_report.html` for result.
+- RUN `docker-compose down` to shut down docker services.
 
-## Actions Implemented
-- Create new service
-- Create new service with empty name
-- Create new service and route
-- Create new service and route with empty name
+## Tests Implemented
+- Create new service -> Create new Route to associate with service.
+- Create new service with empty name -> Create new Route with empty name to associate with service.
+- Clean up for both success or failure execution is implemented.
 
 ## Extra Features
 
@@ -37,14 +36,13 @@
 ```
 cypress/
   e2e/
-    1-create-services  # Test cases for action 1
-    2-add-entities     # Test cases for action 2
+    create-service-route  # Test cases folder
   support/
-    config/            # Stores selectors and enumerations
-    elements/          # Stores common elements
-    pages/             # Stores common pages
-cypress.config.js      # Cypress configuration
-cypress.env.json       # Environment-related variables
+    config/               # Stores selectors and enumerations
+    elements/             # Stores common elements
+    pages/                # Stores common pages
+cypress.config.js         # Cypress configuration
+cypress.env.json          # Environment-related variables
 ```
 
 ---
@@ -55,6 +53,7 @@ cypress.env.json       # Environment-related variables
 - Ensure test cases are **readable** to avoid overly long steps.
 - Design **reusable** steps instead of duplicating logic across tests.
 - Use **stable selectors** (e.g., `data-testid`) to reduce the risk of test breakage due to UI changes.
+- Since test cases have dependency on each other, **fail first**.
 
 ### Project-Level Implementation
 - Provide **page-level functions** under `/cypress/support/pages/`.
@@ -64,7 +63,8 @@ cypress.env.json       # Environment-related variables
 
 ### Test Case Implementation
 - Set up `baseUrl` and navigate to `/workspace` before each test begins.
-- **Clean up data** (delete created entries) after each test, taking dependencies into account.
+- **Clean up data** (delete created entries) on finish using after hook, taking dependencies into account.
+- **Clean up data** (delete created entries) on failure using after each hook, taking dependencies into account.
 - **Print logs** at key steps to improve debugging.
 - Include **validations** at important steps — more can be added as needed.
 - Handle special input like entity name is **empty** - need to use entity Id intead of name to delete it.
@@ -75,6 +75,9 @@ cypress.env.json       # Environment-related variables
 
 - Pages like Gateway Services and Routes share a **template**.  
   → A base class is used to implement core functionality such as create, delete, and get ID to avoiding code duplication.
+
+- Pages like Service detail and Route detail share a **template**.  
+  → A base class is used to implement core functionality such as get ID to avoiding code duplication.
 
 - In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
   → Variables are stored in **environment configuration** `cypress.env.json` to make tests easily configurable.
