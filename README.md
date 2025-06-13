@@ -1,24 +1,26 @@
+# Cypress E2E Test Project
 
----
-
-## 1. Local run
+## Local Run Setup
 
 ```bash
 npm install
-npm testmochawesome
+npm test
 ```
 
-## 2. Extra feature
+## Extra Features
 
-### a. Result Report
-Uses Mochawesome as the report generator.<br>
-An HTML report is enabled for human readability.<br>
-The report is downloadable through GitHub Actions.
+### Result Reporting
+- Uses **Mochawesome** as the report generator.
+- Generates an **HTML report** for human-readable output.
+- Report are **downloadable via GitHub Actions**.
 
-### b. Github Action
-Enabled.
+### GitHub Actions
+- Continuous Integration is **enabled** via GitHub Actions.
 
-## Design
+---
+
+## Project Structure
+
 ```
 cypress/
   e2e/
@@ -32,33 +34,45 @@ cypress.config.js      # Cypress configuration
 cypress.env.json       # Environment-related variables
 ```
 
-### Test Cases
-- Ensure test cases are readable; avoid overly long steps.
-- Design reusable steps instead of repeating similar actions in each test case.
-- Use stable selectors such as data-testid properties to reduce the risk of test breakage due to UI changes.
+---
 
-### Project level implemention
-- Provide page-level functions under /cypress/support/pages.
-- Provide common element-level functions under /cypress/support/elements.
-- Centralize selectors under /cypress/support/config/selectors.js to support future UI changes.
-- Use enumerations to store UI options or properties, minimizing user input errors when writing test cases (/cypress/support/config/projectEnum.js).
+## Test Design
 
-### Test cases implemention
-- Set up baseUrl and navigate to /workspace before each test begins.
-- Clean up data (delete created entries) after each test, taking dependencies into account.
-- PPrint logs at key steps to improve debugging.
-- Include validations at important steps — more can be added as needed.
+### Test Case Principles
+- Ensure test cases are **readable** to avoid overly long steps.
+- Design **reusable** steps instead of duplicating logic across tests.
+- Use **stable selectors** (e.g., `data-testid`) to reduce the risk of test breakage due to UI changes.
 
-### Assumptions
-- Entity/View Details Pages (e.g., Gateway Services, Routes) use a shared template.<br> 
-A base class is used to implement core functionality such as create, delete, and get ID — avoiding code duplication.
-- In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like dev or uat).<br>
-Variables are stored in cypress.env.json to make tests easily configurable.
+### Project-Level Implementation
+- Provide **page-level functions** under `/cypress/support/pages/`.
+- Provide common **element-level functions** under `/cypress/support/elements/`.
+- To support future UI changes, provide **centralize selectors** under `/cypress/support/config/selectors.js`.
+- To minimizing user input errors when writing test cases, provide **enumerations** to store **UI options or properties** under `/cypress/support/config/projectEnum.js`.
+
+### Test Case Implementation
+- Set up `baseUrl` and navigate to `/workspace` before each test begins.
+- **Clean up data** (delete created entries) after each test, taking dependencies into account.
+- **Print logs** at key steps to improve debugging.
+- Include **validations** at important steps — more can be added as needed.
+
+---
+
+## Assumptions
+
+- Pages like Gateway Services and Routes share a template.  
+  → A base class is used to implement core functionality such as create, delete, and get ID to avoiding code duplication.
+
+- In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
+  → Variables are stored in `cypress.env.json` to make tests easily configurable.
+
 - Tests may not always run in a fresh environment:
-  - When creating an entity, first check if number of existing one (the page might differ).
+  - When creating an entity, first check the number of existing one to validate if env is fresh (the page might differ).
   - Entity names should be unique to avoid duplication.
 
-### Trade-offs
+---
+
+## Trade-offs
+
 - Some elements (e.g., workspace sidebar) do not fit well into a specific page object.<br>
 They are defined as standalone element-level functions.<br>
 While they could be part of Cypress commands, they are kept separate for extensibility and consistency.
