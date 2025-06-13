@@ -44,7 +44,7 @@ describe('Gateway Service e2e tests', () => {
     }
   });
 
-  it('should create and delete a service successfully', () => {
+  it('should create service successfully', () => {
     const service_name = `test-service-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 
     // Get current services count
@@ -66,7 +66,7 @@ describe('Gateway Service e2e tests', () => {
     });
   });
 
-  it('should create and delete a service with empty name successfully', () => {
+  it('should create service with empty name successfully', () => {
     const service_name = '';
     // Get current services count
     cy.log('Getting current services count');
