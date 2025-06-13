@@ -5,6 +5,7 @@ import ServicesDetail from '../../support/pages/service_detail';
 import Overview from '../../support/pages/overview';
 import Routes from '../../support/pages/routes';
 import RoutesDetail from '../../support/pages/route_detail';
+import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support/selectors/projectEnum';
 
 describe('Gateway Entities e2e tests - Routes and Services', () => {
     const kong_test_services_url = Cypress.env('kong_test_services_url');
@@ -60,14 +61,14 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
 
         // Get current entity counts
         cy.log('Getting current services and routes count');
-        overview.getCurrentEntityCount('Services', 'services_count');
-        overview.getCurrentEntityCount('Routes', 'routes_count');
+        overview.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, 'services_count');
+        overview.getCurrentEntityCount(overviewEnum.summary.types.ROUTES, 'routes_count');
 
         // Create service first
         cy.get('@services_count').then((services_count) => {
             cy.log(`Creating service: ${service_name}`);
-            workspace.navigateTo('default');
-            workspace_sidebar.navigateTo('services');
+            workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
+            workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
             services.createNewService(service_name, kong_test_services_url, services_count);
             // Set context for cleanup after creation
             context.service_name = service_name;
@@ -78,7 +79,7 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
             // Create route associated with the service
             cy.get('@routes_count').then((routes_count) => {
                 cy.log(`Creating route: ${route_name} for service: ${service_name}`);
-                workspace_sidebar.navigateTo('routes');
+                workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
                 routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
                 // Set context for cleanup after creation
                 context.route_name = route_name;

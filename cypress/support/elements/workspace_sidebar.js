@@ -1,40 +1,41 @@
 import { workspace_sidebar } from '../selectors/selector';
+import { workspaceSideBarEnum } from '../selectors/projectEnum';
 
 class WorkSpaceSidebar {
     navigateTo(sidebar_item) {
         cy.get(workspace_sidebar.sidebar_item_workspaces).then(($root) => {
             switch (sidebar_item) {
-                case 'overview':
+                case workspaceSideBarEnum.sidebar.types.OVERVIEW:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_overview).click();
                     break;
-                case 'services':
+                case workspaceSideBarEnum.sidebar.types.SERVICES:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_services).click();
                     break;
-                case 'routes':
+                case workspaceSideBarEnum.sidebar.types.ROUTES:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_routes).click();
                     break;
-                case 'consumers':
+                case workspaceSideBarEnum.sidebar.types.CONSUMERS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_consumers).click();
                     break;
-                case 'plugins':
+                case workspaceSideBarEnum.sidebar.types.PLUGINS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_plugins).click();
                     break;
-                case 'redis_configurations':
+                case workspaceSideBarEnum.sidebar.types.REDIS_CONFIGURATIONS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_redis_configurations).click();
                     break;
-                case 'upstreams':
+                case workspaceSideBarEnum.sidebar.types.UPSTREAMS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_upstreams).click();
                     break;
-                case 'certificates':
+                case workspaceSideBarEnum.sidebar.types.CERTIFICATES:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_certificates).click();
                     break;
-                case 'snis':
+                case workspaceSideBarEnum.sidebar.types.SNIS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_snis).click();
                     break;
-                case 'keys':
+                case workspaceSideBarEnum.sidebar.types.KEYS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_keys).click();
                     break;
-                case 'vaults':
+                case workspaceSideBarEnum.sidebar.types.VAULTS:
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_vaults).click();
                     break;
                 default:

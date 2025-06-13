@@ -1,5 +1,6 @@
 import { services } from '../selectors/selector';
 import Entities from './entities';
+import { entitiesEnum } from '../selectors/projectEnum';
 
 class Services extends Entities {
     constructor() {
@@ -8,7 +9,7 @@ class Services extends Entities {
 
     // Create new service based on the service name and kong test services url
     createNewService(service_name, kong_test_services_url, count) {
-        super.createNewEntity('gateway-service', count);
+        super.createNewEntity(entitiesEnum.types.SERVICES, count);
         if (service_name != '') {
             cy.get(services.services_input_name).type(service_name);
         }
