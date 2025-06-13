@@ -1,20 +1,20 @@
-import CommonFunc from '../functions/common_func';
-import Toaster from '../elements/toaster';
 import { services } from '../selectors/selector';
+import Entities from './entities';
 
-class Services {
+class Services extends Entities {
     constructor() {
-        this.common_func = new CommonFunc();
-        this.toaster = new Toaster();
+        super();
     }
 
-    //create new service based on the service name and kong test services url
+    // Create new service based on the service name and kong test services url
     createNewService(service_name, kong_test_services_url, count) {
-        this.common_func.createNewEntity('gateway-service', count);
-        cy.get(services.service_form_name).type(service_name);
-        cy.get(services.service_form_url).type(kong_test_services_url);
-        cy.get(services.service_create_form_submit).click();
+        super.createNewEntity('gateway-service', count);
+        if (service_name != '') {
+            cy.get(services.services_input_name).type(service_name);
+        }
+        cy.get(services.services_input_url).type(kong_test_services_url);
+        cy.get(services.services_button_submit).click();
         this.toaster.closeToaster();
     }
 }
-export default Services;
+export default Services;    

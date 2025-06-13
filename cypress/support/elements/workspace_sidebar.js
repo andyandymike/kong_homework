@@ -2,7 +2,7 @@ import { workspace_sidebar } from '../selectors/selector';
 
 class WorkSpaceSidebar {
     navigateTo(sidebar_item) {
-        cy.get('[data-testid="sidebar-item-workspaces"]').then(($root) => {
+        cy.get(workspace_sidebar.sidebar_item_workspaces).then(($root) => {
             switch (sidebar_item) {
                 case 'overview':
                     cy.wrap($root).find(workspace_sidebar.sidebar_item_overview).click();

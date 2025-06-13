@@ -1,9 +1,10 @@
 export const toaster = {
-    toaster_root_class: '.k-toaster',
-    toaster_close_icon: '[data-testid="kui-icon-svg-close-icon"]',
+    toaster_class_root: '.k-toaster',
+    toaster_icon_close: '[data-testid="kui-icon-svg-close-icon"]',
 }
 
 export const workspace_sidebar = {
+    sidebar_item_workspaces: '[data-testid="sidebar-item-workspaces"]',
     sidebar_item_overview: '[data-testid="sidebar-item-overview"]',
     sidebar_item_services: '[data-testid="sidebar-item-gateway-services"]',
     sidebar_item_routes: '[data-testid="sidebar-item-routes"]',
@@ -17,28 +18,36 @@ export const workspace_sidebar = {
     sidebar_item_vaults: '[data-testid="sidebar-item-vaults"]',
 }
 
-export const common_func = {
-    empty_state_action: '[data-testid="empty-state-action"]',
-    entity_actions_dropdown_trigger: '[data-testid="row-actions-dropdown-trigger"]',
-    entity_delete_action: '[data-testid="action-entity-delete"]',
-    entity_delete_confirmation_input: '[data-testid="confirmation-input"]',
-    entity_delete_confirmation_button: '[data-testid="modal-action-button"]',
+export const entities = {
+    entities_button_empty_state: '[data-testid="empty-state-action"]',
+    entities_button_dropdown_trigger: '[data-testid="row-actions-dropdown-trigger"]',
+    entities_button_delete: '[data-testid="action-entity-delete"]',
+    entities_input_delete_confirmation: '[data-testid="confirmation-input"]',
+    entities_button_delete_confirmation: '[data-testid="modal-action-button"]',
 }
 
 export const overview = {
-    entity_count: '[class="metric-value-text"]',
+    overview_class_entity_count: '.metric-value-text',
 }
 
 export const routes = {
-    route_form_name: '[data-testid="route-form-name"]',
-    route_form_service_id: '[data-testid="route-form-service-id"]',
-    route_form_protocols: '[data-testid="route-form-protocols"]',
-    route_form_paths_input: '[data-testid="route-form-paths-input-1"]',
-    route_create_form_submit: '[data-testid="route-create-form-submit"]',
+    routes_input_name: '[data-testid="route-form-name"]',
+    routes_input_service_id: '[data-testid="route-form-service-id"]',
+    routes_input_protocols: '[data-testid="route-form-protocols"]',
+    routes_input_paths: '[data-testid="route-form-paths-input-1"]',
+    routes_button_submit: '[data-testid="route-create-form-submit"]',
 }
 
 export const services = {
-    service_form_name: '[data-testid="gateway-service-name-input"]',
-    service_form_url: '[data-testid="gateway-service-url-input"]',
-    service_create_form_submit: '[data-testid="service-create-form-submit"]',
+    services_input_name: '[data-testid="gateway-service-name-input"]',
+    services_input_url: '[data-testid="gateway-service-url-input"]',
+    services_button_submit: '[data-testid="service-create-form-submit"]',
+}
+
+export const entity_detail = {
+    entity_detail_property_detail_id: '[data-testid="id-property-value"]',
+}
+
+export const service_detail = {
+    service_detail_property_enabled_status: '[data-testid="enabled-badge-status"]',
 }

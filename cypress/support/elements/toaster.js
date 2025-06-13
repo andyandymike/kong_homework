@@ -1,16 +1,17 @@
 import { toaster } from '../selectors/selector';
 
+// Toaster element is not always present, so we need to wait for it to appear
+// If it appears, close it
+// If it does not appear, do nothing
 class Toaster {
-    //close toaster if it exists
+    // Close toaster if it exists
     closeToaster() {
-        //wait for toaster to appear
         cy.wait(1000);
-        //close toaster if it exists
-        cy.get(toaster.toaster_root_class, { timeout: 0, multiple: true }).each(($el, index, $list) => {
+        cy.get(toaster.toaster_class_root, { timeout: 0, multiple: true }).each(($el, index, $list) => {
             if ($el.length && $el.is(':visible')) {
-                cy.wrap($el).find(toaster.toaster_close_icon).click();
+                cy.wrap($el).find(toaster.toaster_icon_close).click();
             } else {
-                cy.log('Popup is already gone or hidden');
+                cy.log('No toaster present to close');
             }
         });
     }

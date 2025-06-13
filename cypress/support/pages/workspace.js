@@ -1,5 +1,5 @@
 class Workspace {
-    //navigate to the workspace
+    // Navigate to the workspace
     navigateTo(workspace_name) {
         cy.get(`[data-testid="workspace-link-${workspace_name}"`).click();
     }

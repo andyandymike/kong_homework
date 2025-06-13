@@ -1,9 +1,9 @@
 import { overview } from '../selectors/selector';
 
 class Overview {
-    //get current entity count
+    // Get current entity count and store it in alias
     getCurrentEntityCount(entity_name, output) {
-        cy.get(`[data-testid="${entity_name}"]`).find(overview.entity_count).invoke('text').then((text) => {
+        cy.get(`[data-testid="${entity_name}"]`).find(overview.overview_class_entity_count).invoke('text').then((text) => {
             let services_count = Number(text);
             cy.wrap(services_count).as(output);
         });

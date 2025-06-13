@@ -23,3 +23,4 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// Custom command to wait for element to be ready (visible and enabled)

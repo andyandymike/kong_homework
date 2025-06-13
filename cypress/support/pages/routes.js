@@ -1,22 +1,20 @@
-import CommonFunc from '../functions/common_func';
-import Toaster from '../elements/toaster';
 import { routes } from '../selectors/selector';
+import Entities from './entities';
 
-class Routes {
+class Routes extends Entities {
     constructor() {
-        this.common_func = new CommonFunc();
-        this.toaster = new Toaster();
+        super();
     }
 
-    //create new route based on the service name and kong test services url
+    // Create new route based on the service name and kong test services url
     createNewRoutes(route_name, service_name, protocols, path, count) {
-        this.common_func.createNewEntity('route', count);
-        cy.get(routes.route_form_name).type(route_name);
-        cy.get(routes.route_form_service_id).type(service_name);
-        cy.get(routes.route_form_protocols).click();
+        super.createNewEntity('route', count);
+        cy.get(routes.routes_input_name).type(route_name);
+        cy.get(routes.routes_input_service_id).type(service_name);
+        cy.get(routes.routes_input_protocols).click();
         cy.get(`[data-testid="select-item-${protocols}"]`).click();
-        cy.get(routes.route_form_paths_input).type(path);
-        cy.get(routes.route_create_form_submit).click();
+        cy.get(routes.routes_input_paths).type(path);
+        cy.get(routes.routes_button_submit).click();
         this.toaster.closeToaster();
     }
 }

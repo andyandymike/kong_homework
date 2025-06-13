@@ -69,3 +69,6 @@ yarn.lock
 # IDE files
 .idea/
 .vscode/
+
+# tmp file
+tmp/
