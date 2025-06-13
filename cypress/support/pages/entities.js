@@ -1,5 +1,5 @@
 import Toaster from '../elements/toaster';
-import { entities } from '../selectors/selector';
+import { entities } from '../config/selector';
 
 // Base class for all entities
 // All entities should inherit from this class

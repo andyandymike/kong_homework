@@ -1,6 +1,6 @@
-import { services } from '../selectors/selector';
+import { services } from '../config/selector';
 import Entities from './entities';
-import { entitiesEnum } from '../selectors/projectEnum';
+import { entitiesEnum } from '../config/projectEnum';
 
 class Services extends Entities {
     constructor() {

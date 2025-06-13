@@ -1,6 +1,6 @@
-import { routes } from '../selectors/selector';
+import { routes } from '../config/selector';
 import Entities from './entities';
-import { entitiesEnum } from '../selectors/projectEnum';
+import { entitiesEnum } from '../config/projectEnum';
 
 class Routes extends Entities {
     constructor() {

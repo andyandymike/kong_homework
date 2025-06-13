@@ -3,6 +3,7 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   e2e: {
     baseUrl: 'http://localhost:8002',
+    browser: 'chrome',
     reporter: 'mochawesome',
     reporterOptions: {
       reportDir: 'cypress/reports',

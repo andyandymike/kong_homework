@@ -1,5 +1,5 @@
 import EntityDetail from './entity_detail';
-import { service_detail } from '../selectors/selector';
+import { service_detail } from '../config/selector';
 
 class ServicesDetail extends EntityDetail {
     constructor() {

@@ -1,4 +1,4 @@
-import { toaster } from '../selectors/selector';
+import { toaster } from '../config/selector';
 
 // Toaster element is not always present, so we need to wait for it to appear
 // If it appears, close it

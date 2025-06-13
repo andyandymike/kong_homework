@@ -1,4 +1,4 @@
-import { entity_detail } from '../selectors/selector';
+import { entity_detail } from '../config/selector';
 
 class EntityDetail {
     // Validate entity is created

@@ -1,4 +1,4 @@
-import { overview } from '../selectors/selector';
+import { overview } from '../config/selector';
 
 class Overview {
     // Get current entity count and store it in alias
