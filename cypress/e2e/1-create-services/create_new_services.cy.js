@@ -8,7 +8,7 @@ import { overviewEnum, workspaceEnum, workspaceSideBarEnum } from '../../support
 describe('Gateway Service e2e tests', () => {
   const kong_test_services_url = Cypress.env('kong_test_services_url');
 
-  let workspace, workspace_sidebar, services, overview, services_detail;
+  let workspace, workspace_sidebar, services, overview, service_detail;
 
   // Context for the tests to share
   let context = {};
@@ -26,7 +26,7 @@ describe('Gateway Service e2e tests', () => {
     workspace_sidebar = new WorkSpaceSidebar();
     services = new Services();
     overview = new Overview();
-    services_detail = new ServicesDetail();
+    service_detail = new ServicesDetail();
 
     cy.visit('/workspaces');
   });
@@ -62,7 +62,7 @@ describe('Gateway Service e2e tests', () => {
 
       // Validate service creation
       cy.log('Verifying service is enabled');
-      services_detail.validateServiceIsEnabled();
+      service_detail.validateServiceIsEnabled();
     });
   });
 
@@ -80,10 +80,10 @@ describe('Gateway Service e2e tests', () => {
 
       // Validate service creation
       cy.log('Verifying service is enabled');
-      services_detail.validateServiceIsEnabled();
+      service_detail.validateServiceIsEnabled();
 
       // Get service ID
-      services_detail.getEntityId('service_id');
+      service_detail.getEntityId('service_id');
       cy.get('@service_id').then((service_id) => {
         // Set context for cleanup after creation
         context.service_name = service_id;

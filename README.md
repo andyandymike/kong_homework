@@ -7,6 +7,12 @@ npm install
 npm test
 ```
 
+## Actions Implemented
+- Create new service
+- Create new service with empty name
+- Create new service and route
+- Create new service and route with empty name
+
 ## Extra Features
 
 ### Result Reporting
@@ -54,20 +60,23 @@ cypress.env.json       # Environment-related variables
 - **Clean up data** (delete created entries) after each test, taking dependencies into account.
 - **Print logs** at key steps to improve debugging.
 - Include **validations** at important steps — more can be added as needed.
+- Handle special input like entity name is **empty** - need to use entity Id intead of name to delete it.
 
 ---
 
 ## Assumptions
 
-- Pages like Gateway Services and Routes share a template.  
+- Pages like Gateway Services and Routes share a **template**.  
   → A base class is used to implement core functionality such as create, delete, and get ID to avoiding code duplication.
 
 - In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
-  → Variables are stored in `cypress.env.json` to make tests easily configurable.
+  → Variables are stored in **environment configuration** `cypress.env.json` to make tests easily configurable.
 
-- Tests may not always run in a fresh environment:
+- Tests may **not** always run in a **fresh environment**:
   - When creating an entity, first check the number of existing one to validate if env is fresh (the page might differ).
   - Entity names should be unique to avoid duplication.
+- **A toaster** will pop up when action is successfully executed like create or delete. Need to close it or it may make some button unable to click.<br>
+Although we can set `{ force: true }` to click, but let's try close toaster to **minic user behavior** first.
 
 ---
 

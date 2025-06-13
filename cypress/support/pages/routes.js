@@ -10,7 +10,9 @@ class Routes extends Entities {
     // Create new route based on the service name and kong test services url
     createNewRoutes(route_name, service_name, protocols, path, count) {
         super.createNewEntity(entitiesEnum.types.ROUTES, count);
-        cy.get(routes.routes_input_name).type(route_name);
+        if (route_name != '') {
+            cy.get(routes.routes_input_name).type(route_name);
+        }
         cy.get(routes.routes_input_service_id).type(service_name);
         cy.get(routes.routes_input_protocols).click();
         cy.get(`[data-testid="select-item-${protocols}"]`).click();

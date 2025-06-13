@@ -37,3 +37,25 @@ export const entitiesEnum = {
         ROUTES: 'route',
     },
 }
+
+export const routesEnum = {
+    protocols: {
+        GRPC: 'grpc',
+        GRPCS: 'grpcs',
+        GRPC_GRPCS: 'grpc,grpcs',
+        HTTP: 'http',
+        HTTPS: 'https',
+        HTTP_HTTPS: 'http,https',
+        TCP: 'tcp',
+        TLS: 'tls',
+        TLS_UDP: 'tls,udp',
+        TCP_UDP: 'tcp,udp',
+        TCP_TLS: 'tcp,tls',
+        TCP_TLS_UDP: 'tcp,tls,udp',
+        TLS_PASSTHROUGH: 'tls_passthrough',
+        UDP: 'udp',
+        WS: 'ws',
+        WSS: 'wss',
+        WS_WSS: 'ws,wss',
+    },
+}
