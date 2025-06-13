@@ -119,8 +119,6 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
                 cy.log(`Creating route: ${route_name} for service: ${service_name}`);
                 workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
                 routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
-                // Set context for cleanup after creation
-                context.route_name = route_name;
 
                 // Verify route is created
                 cy.log('Verifying route is created');

@@ -1,11 +1,18 @@
 # Kong E2E Test Project with Cypress
 
 ## Local Run Setup
-
-```bash
-npm install
-npm test
-```
+- Make sure docker environment is ready and up
+- Open terminal to project root
+- Run `git clone https://github.com/andyandymike/kong_homework.git`
+- Run `cd kong_homework`
+- Run `npm install`
+- Run `docker-compose up -d`
+- Check `http://localhost:8002/` is available
+- Check docker contains and get Container ID for cp
+- Run `docker exec -i [Container ID] /bin/sh -c "export KONG_ADMIN_GUI_PATH='/'; export KONG_ADMIN_GUI_URL='http://localhost:8002/manager'; kong reload; exit"`
+- Run `npm test` 
+- Check command line output or `cypress/reports/merged_report.html` for result
+- RUN `docker-compose down` to shut down docker services
 
 ## Actions Implemented
 - Create new service
