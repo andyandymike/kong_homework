@@ -53,7 +53,7 @@ describe('Gateway Entities e2e tests - Routes and Services', () => {
         }
     });
 
-    it.only('should create a service and associated route successfully', () => {
+    it('should create a service and associated route successfully', () => {
         const service_name = `test-service-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
         const route_name = `test-route-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
         const protocols = 'http,https';

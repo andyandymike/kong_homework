@@ -72,3 +72,6 @@ yarn.lock
 
 # tmp file
 tmp/
+
+# merged report
+merged_report.json
