@@ -1,5 +1,4 @@
 {
     "service_url": "https://httpbin.konghq.com",
     "path": "/mock"
-
 }
