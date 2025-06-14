@@ -88,6 +88,7 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
         // Create service based on the number of existing services
         cy.get('@services_count').then((services_count) => {
             // Create service
+            cy.log(`Creating service with empty name`);
             workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
             workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
             services.createNewService(service_name, kong_test_services_url, services_count);
@@ -100,6 +101,7 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
             service_detail.getEntityId('service_id');
             cy.get('@service_id').then((service_id) => {
                 // Set context for cleanup after creation
+                cy.log(`Service Id is ${service_id}`)
                 context.service_name = service_id;
             });
         });
@@ -130,6 +132,7 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
             route_detail.getEntityId('route_id');
             cy.get('@route_id').then((route_id) => {
                 // Set context for cleanup after creation
+                cy.log(`Route Id is ${route_id}`)
                 context.route_name = route_id;
             });
         });

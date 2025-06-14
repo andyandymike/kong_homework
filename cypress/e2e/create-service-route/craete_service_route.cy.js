@@ -93,6 +93,7 @@ describe('Gateway Entities e2e tests - Create Service, Route', () => {
             workspace.navigateTo(workspaceEnum.DEFAULT_WORKSPACE);
             workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
             services.createNewService(service_name, kong_test_services_url, services_count);
+
             // Set context for cleanup after creation
             context.service_name = service_name;
 

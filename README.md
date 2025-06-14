@@ -17,7 +17,8 @@
 ## Tests Implemented
 - Create new service -> Create new Route to associate with service.
 - Create new service with empty name -> Create new Route with empty name to associate with service.
-- Clean up for both success or failure execution is implemented.
+- Clean up for both success or failure execution are implemented.
+- Legacy test cases are kept, see **Trade-offs** for details
 
 ## Extra Features
 
@@ -36,13 +37,16 @@
 ```
 cypress/
   e2e/
-    create-service-route  # Test cases folder
+    create-service-route/                 # Test cases folder
+      create_service_route                # Test case: create a new service and associate it with a route
+      create_service_route_empty_name     # Test case: create a new service and associate it with a route (names are all empty)
+      create_service_route_legacy         # Legacy Test cases: with different structure style
   support/
-    config/               # Stores selectors and enumerations
-    elements/             # Stores common elements
-    pages/                # Stores common pages
-cypress.config.js         # Cypress configuration
-cypress.env.json          # Environment-related variables
+    config/                               # Stores selectors and enumerations
+    elements/                             # Stores common elements
+    pages/                                # Stores common pages
+cypress.config.js                         # Cypress configuration
+cypress.env.json                          # Environment-related variables
 ```
 
 ---
@@ -53,7 +57,7 @@ cypress.env.json          # Environment-related variables
 - Ensure test cases are **readable** to avoid overly long steps.
 - Design **reusable** steps instead of duplicating logic across tests.
 - Use **stable selectors** (e.g., `data-testid`) to reduce the risk of test breakage due to UI changes.
-- Since test cases have dependency on each other, **fail first**.
+- Since test cases have dependency on each other, so **fail first**.
 
 ### Project-Level Implementation
 - Provide **page-level functions** under `/cypress/support/pages/`.
@@ -63,8 +67,9 @@ cypress.env.json          # Environment-related variables
 
 ### Test Case Implementation
 - Set up `baseUrl` and navigate to `/workspace` before each test begins.
+- Create Service and Route are two test cases (`it()`) within one `describe()`, check **Trade-offs** for comparing to legacy style.
 - **Clean up data** (delete created entries) on finish using after hook, taking dependencies into account.
-- **Clean up data** (delete created entries) on failure using after each hook, taking dependencies into account.
+- **Clean up data** (delete created entries) on failure using afterEach hook, taking dependencies into account.
 - **Print logs** at key steps to improve debugging.
 - Include **validations** at important steps — more can be added as needed.
 - Handle special input like entity name is **empty** - need to use entity Id intead of name to delete it.
@@ -92,6 +97,15 @@ Although we can set `{ force: true }` to click, but let's try close toaster to *
 
 ## Trade-offs
 
+- Legacy test cases are with different structure style
+```
+| Usage               | Legacy                                              | New                                                                 |
+|---------------------|-----------------------------------------------------|---------------------------------------------------------------------|
+| Test case structure | Create Service and Route in single it()             | First create Servce in single it() and then create Route in another |
+| Clean up            | ✅ In afterEach()                                   | In after() for a success e2e and afterEach() for failure            |
+| Fail first          | ✅ No (test cases have no dependency on each other) | Yes (test cases have dependency on each other)                      |
+| Code readability    | Test case steps long with nesting                   | ✅ Test case steps short without nesting                            |                
+```
 - Some elements (e.g., workspace sidebar) do not fit well into a specific page object.<br>
 They are defined as standalone element-level functions.<br>
 While they could be part of Cypress commands, they are kept separate for extensibility and consistency.
