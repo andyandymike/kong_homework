@@ -59,3 +59,15 @@ export const routesEnum = {
         WS_WSS: 'ws,wss',
     },
 }
+
+export const routeDetailEnum = {
+    button: {
+        ROUTE_ACTIONS: 'Route actions '
+    }
+}
+
+export const serviceDetailEnum = {
+    button: {
+        SERVICE_ACTIONS: 'Gateway Service actions '
+    }
+}

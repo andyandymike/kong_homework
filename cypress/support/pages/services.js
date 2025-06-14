@@ -2,6 +2,7 @@ import { services } from '../config/selector';
 import Entities from './entities';
 import { entitiesEnum } from '../config/projectEnum';
 
+// Class for Services page
 class Services extends Entities {
     constructor() {
         super();

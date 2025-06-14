@@ -1,3 +1,4 @@
+// Class for Workspace page
 class Workspace {
     // Navigate to the workspace
     navigateTo(workspace_name) {

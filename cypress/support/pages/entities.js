@@ -1,9 +1,9 @@
 import Toaster from '../elements/toaster';
 import { entities } from '../config/selector';
 
-// Base class for all entities
-// All entities should inherit from this class
-// This class contains the common functions for all entities
+// Base class for Entities page
+// Entities page should inherit from this class
+// This class contains the common functions for Entities pages
 class Entities {
     constructor() {
         this.toaster = new Toaster();

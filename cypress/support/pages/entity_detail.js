@@ -1,5 +1,8 @@
 import { entity_detail } from '../config/selector';
 
+// Base class for all Entity Detail page
+// All entity detail page should inherit from this class
+// This class contains the common functions for all Entity Detail pages
 class EntityDetail {
     // Validate entity is created
     validateEntityIsCreated() {

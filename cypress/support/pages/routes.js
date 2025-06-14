@@ -2,6 +2,7 @@ import { routes } from '../config/selector';
 import Entities from './entities';
 import { entitiesEnum } from '../config/projectEnum';
 
+// Class for Routes page
 class Routes extends Entities {
     constructor() {
         super();

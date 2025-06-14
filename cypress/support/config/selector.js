@@ -50,4 +50,9 @@ export const entity_detail = {
 
 export const service_detail = {
     service_detail_property_enabled_status: '[data-testid="enabled-badge-status"]',
+    service_detail_button_header_actions: '[data-testid="header-actions"]'
+}
+
+export const route_detail = {
+    route_detail_button_header_actions: '[data-testid="header-actions"]',
 }

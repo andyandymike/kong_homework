@@ -1,5 +1,7 @@
 import { overview } from '../config/selector';
 
+
+// Class for Overview page
 class Overview {
     // Get current entity count and store it in alias
     getCurrentEntityCount(entity_name, output) {
