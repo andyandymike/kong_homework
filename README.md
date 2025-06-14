@@ -8,8 +8,6 @@
 - Run `npm install`
 - Run `docker-compose up -d`
 - Check `http://localhost:8002/` is available.
-- Check docker contains and get Container ID for cp.
-- Run `docker exec -i [Container ID] /bin/sh -c "export KONG_ADMIN_GUI_PATH='/'; export KONG_ADMIN_GUI_URL='http://localhost:8002/manager'; kong reload; exit"`
 - Run `npm test` 
 - Check command line output or `cypress/reports/merged_report.html` for result.
 - Run `docker-compose down` to shut down docker services.
@@ -43,6 +41,9 @@ cypress/
     config/                               # Stores selectors and enumerations
     elements/                             # Stores common elements
     pages/                                # Stores common pages
+      base/                               # Base pages class
+      route/                              # Route page related class
+      service/                            # Service page related class
     commands.js                           # Stores common commands and test case step commands
 cypress.config.js                         # Cypress configuration
 cypress.env.json                          # Environment-related variables
@@ -61,14 +62,19 @@ cypress.env.json                          # Environment-related variables
 
 ### Project-Level Implementation
 - Provide **page-level functions** under `cypress/support/pages/`.
-- Provide common **element-level functions** under `cypress/support/elements/`.
+- Define **dynamic properties** input support for entities creation, provide better extensibility.
 - Provide common functions under `cypress/support/common/func.js`.
 - To support future UI changes, provide **centralize selectors** under `cypress/support/config/selectors.js`.
-- To minimizing user input errors when writing test cases, provide **enumerations** to store **UI options or properties** under `cypress/support/config/projectEnum.js`.
+- To minimizing user input errors when writing test cases, provide **enumerations** to store **UI options or properties** under `cypress/support/config/project_enum.js`.
 - **Wrap** set of page/element/common actions to actual **test step** commands under `cypress/support/commands.js`.. To avoid possible misuse:
   - Parent command for steps that can be used any time. → eg. Create new service command will always start from `/workspaces`.
   - Child command for steps that have dependency. → eg. Get service Id should already on service detail page.
   - Dual command for steps that should be used both anywhere or inbetween. → eg. Set context value.
+- In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
+  → Variables are stored in **environment configuration** `cypress.env.json` to make tests easily configurable.
+- Tests may **not** always run in a **fresh environment**:
+  - When creating an entity, first check the number of existing one to validate if env is fresh (the page might differ).
+  - Entity names should be unique to avoid duplication.
 
 ### Test Case Implementation
 - Set up `baseUrl` and navigate to `/workspace` before each test begins.
@@ -83,20 +89,7 @@ cypress.env.json                          # Environment-related variables
 
 ## Assumptions
 
-- Pages like Gateway Services and Routes share a **template**.  
-  → A base class is used to implement core functionality such as create, delete, and get ID to avoiding code duplication.
-
-- Pages like Service detail and Route detail share a **template**.  
-  → A base class is used to implement core functionality such as get ID to avoiding code duplication.
-
-- In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
-  → Variables are stored in **environment configuration** `cypress.env.json` to make tests easily configurable.
-
-- Tests may **not** always run in a **fresh environment**:
-  - When creating an entity, first check the number of existing one to validate if env is fresh (the page might differ).
-  - Entity names should be unique to avoid duplication.
-- **A toaster** will pop up when action is successfully executed like create or delete. Need to close it or it may make some button unable to click.<br>
-Although we can set `{ force: true }` to click, but let's try close toaster to **minic user behavior** first.
+- **Service is available** when start testing
 
 ---
 
@@ -107,10 +100,10 @@ Although we can set `{ force: true }` to click, but let's try close toaster to *
   - ✅ No need to fail fast.
   - ✅ Handle both success and failure in afterEach()
   - ❌ Case steps will be long.
-- Some elements (e.g., workspace sidebar) do not fit well into a specific page object.<br>
-They are defined as standalone element-level functions.<br>
-While they could be part of Cypress commands, they are kept separate for extensibility and consistency.
+- **A toaster** will pop up when action is successfully executed like create or delete. Need to close it or it may make some button unable to click.<br>
+Although we can set `{ force: true }` to click, but let's try close toaster to **minic user behavior** first.
 - Due to time constraints, the browser size is currently fixed at the start of each test.<br>
 In the future, tests should cover multiple screen sizes.
+- Due to time constraints, validation and page level functions are limited to minimum.
 
 ---

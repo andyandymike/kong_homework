@@ -1,6 +1,6 @@
-import EntityDetail from './entity_detail';
-import { service_detail } from '../config/selector';
-import { serviceDetailEnum } from '../config/projectEnum';
+import EntityDetail from '../base/entity_detail';
+import { service_detail } from '../../config/selector';
+import { serviceDetailEnum } from '../../config/project_enum';
 
 // Class for Service Detail page
 class ServicesDetail extends EntityDetail {

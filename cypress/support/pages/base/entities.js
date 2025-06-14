@@ -1,5 +1,5 @@
-import Toaster from '../elements/toaster';
-import { entities } from '../config/selector';
+import Toaster from '../../elements/toaster';
+import { entities } from '../../config/selector';
 
 // Base class for Entities page
 // Entities page should inherit from this class

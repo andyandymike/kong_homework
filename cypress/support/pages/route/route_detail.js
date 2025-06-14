@@ -1,6 +1,6 @@
-import { route_detail } from '../config/selector';
-import { routeDetailEnum } from '../config/projectEnum';
-import EntityDetail from './entity_detail';
+import { route_detail } from '../../config/selector';
+import { routeDetailEnum } from '../../config/project_enum';
+import EntityDetail from '../base/entity_detail';
 
 // Class for Route Detail page
 class RouteDetail extends EntityDetail {

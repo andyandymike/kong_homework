@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "server:start": "docker-compose up -d",
+    "server:stop": "docker-compose down",
     "test": "cypress run --reporter mochawesome",
     "merge:reports": "mochawesome-merge ./cypress/reports/*.json -o merged_report.json",
     "generate:report": "marge merged_report.json --reportDir cypress/reports --inline",

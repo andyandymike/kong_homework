@@ -1,4 +1,4 @@
-import { entity_detail } from '../config/selector';
+import { entity_detail } from '../../config/selector';
 
 // Base class for all Entity Detail page
 // All entity detail page should inherit from this class

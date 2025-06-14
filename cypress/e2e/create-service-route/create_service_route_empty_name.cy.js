@@ -1,4 +1,4 @@
-import { overviewEnum, routesEnum } from '../../support/config/projectEnum';
+import { overviewEnum, routesEnum } from '../../support/config/project_enum';
 import 'cypress-fail-fast';
 
 describe('Gateway Entities e2e tests - Create Service, Route with empty name', () => {
@@ -57,7 +57,11 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
     it('should create service with empty name successfully', () => {
         const service_name = '';
         const count_alias = 'services_count';
-
+        const service_config = {
+            serviceName: service_name,
+            serviceUrl: kong_test_services_url,
+        };
+        
         // Get current services count
         cy.log('Getting current services count');
         cy.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, count_alias);
@@ -66,7 +70,7 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
         // 2. Validate service is enabled
         // 3. Get service ID
         cy.log('Creating service with empty name');
-        cy.createServiceByExistingServiceCount(service_name, kong_test_services_url, count_alias)
+        cy.createServiceByExistingServiceCount(service_config, count_alias)
             .validateServiceIsEnabled()
             .getServiceId(context);
     });
@@ -77,6 +81,12 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
         const protocols = routesEnum.protocols.HTTP_HTTPS;
         const path = '/mock';
         const count_alias = 'route_count';
+        const route_config = {
+            routeName: route_name,
+            serviceName: service_name,
+            protocols: protocols,
+            path: path,
+        };
 
         // Get current entity counts
         cy.log('Getting current services and routes count');
@@ -86,7 +96,7 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
         // 2. Validate route is created
         // 3. Get route ID
         cy.log('Creating route with empty name');
-        cy.createRouteAndAssociateWithService(route_name, service_name, protocols, path, count_alias)
+        cy.createRouteAndAssociateWithService(route_config, count_alias)
             .validateRouteIsCreated()
             .getRouteId(context);
     });

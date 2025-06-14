@@ -26,12 +26,12 @@
 // Custom command to wait for element to be ready (visible and enabled)
 import WorkSpaceSidebar from './elements/workspace_sidebar';
 import Workspace from './pages/workspace';
-import Services from './pages/services';
-import ServicesDetail from './pages/service_detail';
+import Services from './pages/service/services';
+import ServicesDetail from './pages/service/service_detail';
 import Overview from './pages/overview';
-import Routes from './pages/routes';
-import RoutesDetail from './pages/route_detail';
-import { workspaceEnum, workspaceSideBarEnum } from './config/projectEnum';
+import Routes from './pages/route/routes';
+import RoutesDetail from './pages/route/route_detail';
+import { workspaceEnum, workspaceSideBarEnum } from './config/project_enum';
 
 const workspace = new Workspace();
 const workspace_sidebar = new WorkSpaceSidebar();
@@ -74,12 +74,11 @@ Cypress.Commands.add('navigateToDefaultWorkspace', () => {
 // ---------- Service page Start ----------
 
 // Create a new service, depend on existing services count
-Cypress.Commands.add('createServiceByExistingServiceCount', (service_name, kong_test_services_url, services_count) => {
-    cy.navigateToWorkspaces();
+Cypress.Commands.add('createServiceByExistingServiceCount', (service_config, services_count) => {
     cy.get(`@${services_count}`).then((services_count) => {
         cy.navigateToDefaultWorkspace();
         workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.SERVICES);
-        services.createNewService(service_name, kong_test_services_url, services_count);
+        services.createNewService(service_config, services_count);
     });
 });
 
@@ -123,12 +122,12 @@ Cypress.Commands.add('validateServiceIsEnabled', { prevSubject: 'element' }, (su
 // ---------- Route page Start ----------
 
 // Create a new route, depend on existing services count, and associate with a service
-Cypress.Commands.add('createRouteAndAssociateWithService', (route_name, service_name, protocols, path, routes_count) => {
-    cy.navigateToWorkspaces();
+Cypress.Commands.add('createRouteAndAssociateWithService', (route_config, routes_count) => {
     cy.get(`@${routes_count}`).then((routes_count) => {
+        cy.log(`----------${routes_count}`)
         cy.navigateToDefaultWorkspace();
         workspace_sidebar.navigateTo(workspaceSideBarEnum.sidebar.types.ROUTES);
-        routes.createNewRoutes(route_name, service_name, protocols, path, routes_count);
+        routes.createNewRoute(route_config, routes_count);
     });
 });
 
