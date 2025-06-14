@@ -37,6 +37,7 @@ cypress/
     create-service-route/                 # Test cases folder
       create_service_route                # Test case: create a new service and associate it with a route
       create_service_route_empty_name     # Test case: create a new service and associate it with a route (names are all empty)
+  fixtures/                               # Test data json files  
   support/
     config/                               # Stores selectors and enumerations
     elements/                             # Stores common elements
@@ -58,32 +59,29 @@ cypress.env.json                          # Environment-related variables
 - Design **reusable** steps instead of duplicating logic across tests.
 - Use **stable selectors** (e.g., `data-testid`) to reduce the risk of test breakage due to UI changes.
 - Use **centralized** place to store values that may changed.
+- Load test data via **fixture**.
 - Since test cases have dependency on each other, so **fail first**. Check **Trade-offs** for thoughts.
 
 ### Project-Level Implementation
 - Provide **page-level functions** under `cypress/support/pages/`.
 - Define **dynamic properties** input support for entities creation, provide better extensibility.
-- Provide common functions under `cypress/support/common/func.js`.
 - To support future UI changes, provide **centralize selectors** under `cypress/support/config/selectors.js`.
 - To minimizing user input errors when writing test cases, provide **enumerations** to store **UI options or properties** under `cypress/support/config/project_enum.js`.
 - **Wrap** set of page/element/common actions to actual **test step** commands under `cypress/support/commands.js`.. To avoid possible misuse:
   - Parent command for steps that can be used any time. → eg. Create new service command will always start from `/workspaces`.
   - Child command for steps that have dependency. → eg. Get service Id should already on service detail page.
   - Dual command for steps that should be used both anywhere or inbetween. → eg. Set context value.
-- In the future, test data such as URLs may change (e.g., for specific test scenarios or changes in environments like `dev` or `uat`).
-  → Variables are stored in **environment configuration** `cypress.env.json` to make tests easily configurable.
 - Tests may **not** always run in a **fresh environment**:
   - When creating an entity, first check the number of existing one to validate if env is fresh (the page might differ).
   - Entity names should be unique to avoid duplication.
 
 ### Test Case Implementation
-- Set up `baseUrl` and navigate to `/workspace` before each test begins.
 - Create Service and Route are two `it()` within one `describe()`. Check **Trade-offs** for thoughts.
 - **Clean up data** (delete created entries) on finish using after hook, taking dependencies into account.
 - **Clean up data** (delete created entries) on failure using afterEach hook, taking dependencies into account.
 - **Print logs** at key steps to improve debugging.
-- Include **validations** at important steps — more can be added as needed.
-- Handle special input like entity name is **empty** - need to use entity Id intead of name to delete it.
+- Include **validations** at important steps.
+- Handle special input like entity name is **empty**.
 
 ---
 

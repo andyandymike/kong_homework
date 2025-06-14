@@ -2,18 +2,18 @@ import { overviewEnum, routesEnum } from '../../support/config/project_enum';
 import 'cypress-fail-fast';
 
 describe('Gateway Entities e2e tests - Create Service, Route with empty name', () => {
-    const kong_test_services_url = Cypress.env('kong_test_services_url');
-
     let context = {};
 
     before(() => {
         cy.log('Starting Test Suite...');
     });
 
-    beforeEach(() => {
+    beforeEach(function () {
         cy.log('Starting test...');
         // Set reasonable viewport
         cy.viewport(1536, 960);
+        // Load test data
+        cy.fixture('testdata.json').as('testdata');
     });
 
     after(() => {
@@ -54,14 +54,14 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
         }
     });
 
-    it('should create service with empty name successfully', () => {
+    it('should create service with empty name successfully', function () {
         const service_name = '';
         const count_alias = 'services_count';
         const service_config = {
             serviceName: service_name,
-            serviceUrl: kong_test_services_url,
+            serviceUrl: this.testdata.service_url,
         };
-        
+
         // Get current services count
         cy.log('Getting current services count');
         cy.getCurrentEntityCount(overviewEnum.summary.types.SERVICES, count_alias);
@@ -75,17 +75,16 @@ describe('Gateway Entities e2e tests - Create Service, Route with empty name', (
             .getServiceId(context);
     });
 
-    it('should create a service and associated route with empty name successfully', () => {
+    it('should create a service and associated route with empty name successfully', function () {
         const service_name = context.service_name;
         const route_name = '';
         const protocols = routesEnum.protocols.HTTP_HTTPS;
-        const path = '/mock';
         const count_alias = 'route_count';
         const route_config = {
             routeName: route_name,
             serviceName: service_name,
             protocols: protocols,
-            path: path,
+            path: this.testdata.path,
         };
 
         // Get current entity counts

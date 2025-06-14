@@ -3,18 +3,18 @@ import CommonFuncs from '../../support/common/func';
 import 'cypress-fail-fast';
 
 describe('Gateway Entities e2e tests - Create Service, Route', () => {
-    const kong_test_services_url = Cypress.env('kong_test_services_url');
-
     let context = {};
 
     before(() => {
         cy.log('Starting Test Suite...');
     });
 
-    beforeEach(() => {
+    beforeEach(function () {
         cy.log('Starting test...');
         // Set reasonable viewport
         cy.viewport(1536, 960);
+        // Load test data
+        cy.fixture('testdata.json').as('testdata');
     });
 
     after(() => {
@@ -55,12 +55,12 @@ describe('Gateway Entities e2e tests - Create Service, Route', () => {
         }
     });
 
-    it('should create a service successfully', () => {
+    it('should create a service successfully', function () {
         const service_name = CommonFuncs.createUniqueName('test-service');
         const count_alias = 'service_count';
         const service_config = {
             serviceName: service_name,
-            serviceUrl: kong_test_services_url,
+            serviceUrl: this.testdata.service_url,
         };
 
         // Get current entity counts
@@ -76,17 +76,16 @@ describe('Gateway Entities e2e tests - Create Service, Route', () => {
             .validateServiceIsEnabled();
     });
 
-    it('should create a route and associated with previous service successfully', () => {
+    it('should create a route and associated with previous service successfully', function () {
         const service_name = context.service_name;
         const route_name = CommonFuncs.createUniqueName('test-route');
         const protocols = routesEnum.protocols.HTTP_HTTPS;
-        const path = '/mock';
         const count_alias = 'routes_count';
         const route_config = {
             routeName: route_name,
             serviceName: service_name,
             protocols: protocols,
-            path: path,
+            path: this.testdata.path,
         };
 
         // Get current entity counts
